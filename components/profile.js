@@ -1,16 +1,63 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { StyleSheet, Text, View, Button, Image, ScrollView } from 'react-native';
-import { Profiler } from 'react/cjs/react.production.min';
+import { StyleSheet, Text, View, Button, Image, ScrollView, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+//import { Profiler } from 'react/cjs/react.production.min';
 
 class Profile extends Component {
   constructor(props){
     super(props);
     this.state ={ 
-
+      isLoading: true,
+      userData: []
     };
 }
+
+componentDidMount() {
+  this.unsubscribe = this.props.navigation.addListener('focus', () => {
+    this.checkLoggedIn();
+  });
+  this.getData();
+}
+
+componentWillUnmount() {
+  this.unsubscribe();
+}
+getData = async () => {
+  const value = await AsyncStorage.getItem('@session_token');
+  const userID = await AsyncStorage.getItem('@session_id');
+  return fetch("http://localhost:3333/api/1.0.0/user/" + userID, {
+        'headers': {
+          'X-Authorization':  value
+        }
+      })
+      .then((response) => {
+          if(response.status === 200){
+              return response.json()
+          }else if(response.status === 401){
+            this.props.navigation.navigate("Login");
+          }else{
+              throw 'Something went wrong';
+          }
+      })
+      .then((responseJson) => {
+        this.setState({
+          isLoading: false,
+          userData: responseJson
+        })
+      })
+      .catch((error) => {
+          console.log(error);
+      })
+}
+
+checkLoggedIn = async () => {
+  const value = await AsyncStorage.getItem('@session_token');
+  if (value == null) {
+      this.props.navigation.navigate('Login');
+  }
+};
 
     render(){
      return (
@@ -18,8 +65,10 @@ class Profile extends Component {
         <View style={styles.viewOne}>
         <Text style = {styles.h1}>SPACEBOOK</Text>
         </View>  
+        <Text style={{color:'white'}}>Welcome: {this.state.userData.first_name} {this.state.userData.last_name}</Text>
         <View style ={styles.viewTwo}>
         </View>
+
         <View style={styles.viewThree}>
         <ScrollView style={styles.scrollView}>
           <Text style={styles.h2}>
@@ -33,7 +82,7 @@ class Profile extends Component {
           </Text>
       </ScrollView>
           <Button title ='Friends' color = 'black'/>
-          <Button title = 'Settings' color= 'black'/>
+          <Button title = 'Settings' color= 'black' onPress = {()=>navigation.navigate('Settings')}/>
         </View>
       </View>
     );
@@ -53,7 +102,6 @@ const styles = StyleSheet.create({
   viewTwo: {
     flex: 3,
     backgroundColor: 'darkcyan',
-    
   },
   viewThree: {
     flex: 7,
@@ -63,8 +111,7 @@ const styles = StyleSheet.create({
   h1: {
     flex:1,
     fontSize: 36,
-    color: 'white',
-    
+    color: 'white',  
   },
   h2: {
     flex:1,
