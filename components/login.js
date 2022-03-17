@@ -2,17 +2,47 @@ import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { StyleSheet, Text, View, Button, Image, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Login extends Component {
     constructor(props){
         super(props);
         this.state ={ 
-            first_name: '',
-            last_name: '',
             email: '',
             password: ''
         };
     }
+
+    login = async () => {
+
+      //Validation here...
+
+      return fetch("http://localhost:3333/api/1.0.0/login", {
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.state)
+      })
+      .then((response) => {
+          if(response.status === 200){
+              return response.json()
+          }else if(response.status === 400){
+              throw 'Invalid email or password';
+          }else{
+              throw 'Something went wrong';
+          }
+      })
+      .then(async (responseJson) => {
+              console.log(responseJson);
+              await AsyncStorage.setItem('@session_token', responseJson.token);
+              await AsyncStorage.setItem('@session_id', responseJson.id);
+              this.props.navigation.navigate("Profile");
+      })
+      .catch((error) => {
+          console.log(error);
+      })
+  }
     render(){
         const navigation = this.props.navigation;
      return (  
@@ -21,9 +51,14 @@ class Login extends Component {
         <Text style = {styles.h1}>SPACEBOOK</Text>
         </View>  
         <View style ={styles.viewTwo}>
-         <TextInput style = {styles.h2} placeholder = 'Email'></TextInput>
-         <TextInput style = {styles.h2} placeholder = 'Password'></TextInput>
-         <Button title ='Login' color = 'black'  onPress={()=>navigation.navigate('Profile')}/>
+         <TextInput style = {styles.h2} placeholder = 'Email' 
+          onChangeText={(email) => this.setState({email})}
+          value={this.state.email}></TextInput>
+         <TextInput style = {styles.h2} placeholder = 'Password'
+          onChangeText={(password) => this.setState({password})}
+          value={this.state.password}
+          secureTextEntry={true}></TextInput>
+         <Button title ='Login' color = 'black' onPress={() => this.login()}/>
         </View>
         <View style={styles.viewThree}></View>
       </View>

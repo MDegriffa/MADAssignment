@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { StyleSheet, Text, View, Button, Image, TextInput } from 'react-native';
 
+
 class CreateAccount extends Component {
   constructor(props){
     super(props);
@@ -11,8 +12,34 @@ class CreateAccount extends Component {
       last_name: '',
       email: '',
       password: '',
-      confirm_password: ''
     };
+}
+signup = () => {
+  //Validation here...
+
+  return fetch("http://localhost:3333/api/1.0.0/user", {
+      method: 'post',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state)
+  })
+  .then((response) => {
+      if(response.status === 201){
+          return response.json()
+      }else if(response.status === 400){
+          throw 'Failed validation';
+      }else{
+          throw 'Something went wrong';
+      }
+  })
+  .then((responseJson) => {
+         console.log("User created with ID: ", responseJson);
+         this.props.navigation.navigate("Login");
+  })
+  .catch((error) => {
+      console.log(error);
+  })
 }
     render(){
         const navigation = this.props.navigation;
@@ -22,12 +49,15 @@ class CreateAccount extends Component {
         <Text style = {styles.h1}>SPACEBOOK</Text>
         </View>  
         <View style ={styles.viewTwo}>
-         <TextInput style = {styles.h2} placeholder = 'First name'></TextInput>
-         <TextInput style = {styles.h2} placeholder = 'Last name'></TextInput>
-         <TextInput style = {styles.h2} placeholder = 'Email'></TextInput>
-         <TextInput style = {styles.h2} placeholder = 'Password'></TextInput>
-         <TextInput style = {styles.h2} placeholder = 'Confirm Password'></TextInput>
-         <Button title ='Create account' color = 'black'/>
+         <TextInput style = {styles.h2} placeholder = 'First name' onChangeText={(first_name) => this.setState({first_name})}
+                    value={this.state.first_name}></TextInput>
+         <TextInput style = {styles.h2} placeholder = 'Last name' onChangeText={(last_name) => this.setState({last_name})}
+                    value={this.state.last_name}></TextInput>
+         <TextInput style = {styles.h2} placeholder = 'Email'  onChangeText={(email) => this.setState({email})}
+                    value={this.state.email}></TextInput>
+         <TextInput style = {styles.h2} placeholder = 'Password' onChangeText={(password) => this.setState({password})}
+                    value={this.state.password}></TextInput>
+         <Button title ='Create account' color = 'black'  onPress={() => this.signup()}/>
         </View>
       </View>
     );
