@@ -9,6 +9,7 @@ import Profile from './components/profile';
 import Login from './components/login';
 import Friends from './components/friends';
 import Settings from './components/settings';
+import Info from './components/info';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,15 +21,16 @@ class App extends Component {
         <Stack.Navigator>
             <Stack.Screen  name="Welcome" component={Index} options={{headerShown: false}}/>
             <Stack.Screen  name="Login" component={Login}/>
-            <Stack.Screen  name="Profile" component={Profile}/>
+            <Stack.Screen  name="Profile" component={Profile} options={{ headerShown: false }}/>
             <Stack.Screen  name="CreateAccount" component={CreateAccount}/>
-            
+            <Stack.Screen  name="Settings" component={Settings}/>
+            <Stack.Screen  name="Friends" component={Friends}/>
+            <Stack.Screen  name="Info" component={Info}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
-
-  }
+}
 
 
 
