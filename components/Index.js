@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { StyleSheet, Text, View, Button, Image, TextInput } from 'react-native';
-
+import Pictures from '../assets/blackhole.png';
 
 class Index extends Component {
     render(){
@@ -11,9 +11,10 @@ class Index extends Component {
       <View style={styles.flexContainer}>     
         <View style={styles.viewOne}>
         <Text style = {styles.h1}>SPACEBOOK</Text>
-         <Image source={{uri:'./assets/blackhole.png'}}/>
+         
         </View>
         <View style ={styles.viewTwo}>
+
         <Button title ='Create account' color = 'black' onPress={()=>navigation.navigate('CreateAccount')} />
         </View>
         <View style={styles.viewThree}>
@@ -24,6 +25,9 @@ class Index extends Component {
 }
 }
 
+//<Image
+//source={{ uri: Pictures }}
+//style={{ width: 300, height: 300 }}/>
 
 const styles = StyleSheet.create({
   flexContainer: {

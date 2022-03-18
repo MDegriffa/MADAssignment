@@ -10,7 +10,8 @@ class Profile extends Component {
     super(props);
     this.state ={ 
       isLoading: true,
-      userData: []
+      userData: [],
+      userId: ''
     };
 }
 
@@ -82,7 +83,7 @@ checkLoggedIn = async () => {
           </Text>
       </ScrollView>
           <Button title ='Friends' color = 'black'/>
-          <Button title = 'Settings' color= 'black' onPress = {()=>navigation.navigate('Settings')}/>
+          <Button title = 'Settings' color= 'black' onPress = {()=>this.props.navigation.navigate('Settings')}/>
         </View>
       </View>
     );

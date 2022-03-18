@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     flex:1,
     fontSize: 24,
     color: 'white',
-    placeholderTextColor: 'black'
+    placeholderTextColor: 'white'
   },
   b1: {
     color: 'green'

@@ -95,7 +95,6 @@ updateDetails = async () =>  {
   })
   .then((response) => {
     console.log("Details changed");
-    this.props.navigation.navigate("Profile");
   })
   .catch((error) => {
     console.log(error);

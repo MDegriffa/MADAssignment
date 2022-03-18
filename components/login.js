@@ -15,8 +15,6 @@ class Login extends Component {
 
     login = async () => {
 
-      //Validation here...
-
       return fetch("http://localhost:3333/api/1.0.0/login", {
           method: 'post',
           headers: {
@@ -94,7 +92,7 @@ const styles = StyleSheet.create({
   h2: {
     flex:1,
     fontSize: 24,
-    placeholderTextColor: 'black',
+    placeholderTextColor: 'white',
   },
   b1: {
     color: 'green'
