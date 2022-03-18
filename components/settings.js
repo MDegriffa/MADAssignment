@@ -22,7 +22,7 @@ componentWillUnmount(){
 }
 
 checkLoggedIn = async () => {
-  const value = await AsyncStorage.getItem('@session_token');
+  let value = await AsyncStorage.getItem('@session_token');
   if(value !== null) {
     this.setState({token:value});
   }else{
@@ -62,7 +62,7 @@ logout = async () => {
         <Text style = {styles.h1}>SPACEBOOK</Text>
         </View>  
         <View style ={styles.viewTwo}>
-        <Button title ='About' color = 'black'/>
+        <Button title ='Account Info' color = 'black' onPress = {()=>this.props.navigation.navigate('Info')}/>
         </View>
         <View style={styles.viewThree}>
           <Button title = 'Logout' color= 'black' onPress={() => this.logout()}/>
