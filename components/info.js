@@ -8,6 +8,7 @@ class Settings extends Component {
   constructor(props){
     super(props);
     this.state ={
+      userData: [],
       prevFirst_name: '',
       prevLast_name: '',
       prevEmail: '',
@@ -41,14 +42,14 @@ getData = async () => {
           if(response.status === 200){
               return response.json()
           }else if(response.status === 401){
-            this.props.navigation.navigate("Login");
+            console.log('Failed to update')
+            //this.props.navigation.navigate("Login");
           }else{
               throw 'Something went wrong';
           }
       })
       .then((responseJson) => {
         this.setState({
-          isLoading: false,
           userData: responseJson
         })
       })
@@ -67,6 +68,7 @@ checkLoggedIn = async () => {
 
 updateDetails = async () =>  {
   let to_send = {};
+
   const value = await AsyncStorage.getItem('@session_token');
   const userID = await AsyncStorage.getItem('@session_id');
 
@@ -79,18 +81,20 @@ updateDetails = async () =>  {
   }
 
   if (this.state.email != this.state.prevEmail){
-    to_send['email'] = parseInt(this.state.email);
+    to_send['email'] = this.state.email;
   }
 
   if (this.state.password != this.state.prevPassword){
-    to_send['password'] = parseInt(this.state.password);
+    to_send['password'] = this.state.password;
   }
 
   console.log(JSON.stringify(to_send));
 
   return fetch("http://localhost:3333/api/1.0.0/user/" + userID, {
       method: 'PATCH',
-      headers: {'content-type': 'application/json'},
+      headers: {'content-type': 'application/json',
+         'X-Authorization':  value
+    },
       body: JSON.stringify(to_send)
   })
   .then((response) => {
