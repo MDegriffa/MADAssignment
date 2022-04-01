@@ -1,32 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
+/* eslint-disable no-use-before-define */
+/* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import {
+  StyleSheet, Text, View, Button,
+} from 'react-native';
 
 class Friends extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state ={ 
+    this.state = {
 
     };
-}
-    render(){
-     return (
-      <View style={styles.flexContainer}>        
+  }
+
+  render() {
+    return (
+
+      <View style={styles.flexContainer}>
         <View style={styles.viewOne}>
-        <Text style = {styles.h1}>SPACEBOOK</Text>
-        </View>  
-        <View style ={styles.viewTwo}>
-        <Button title ='Create account' color = 'black'/>
+          <Text style={styles.h1}>SPACEBOOK</Text>
+        </View>
+        <View style={styles.viewTwo}>
+          <Button title="Create account" color="black" />
         </View>
         <View style={styles.viewThree}>
-          <Button title = 'login' color= 'black'/>
+          <Button title="login" color="black" />
         </View>
       </View>
     );
+  }
 }
-}
-
 
 const styles = StyleSheet.create({
   flexContainer: {
@@ -36,26 +39,26 @@ const styles = StyleSheet.create({
   viewOne: {
     flex: 1,
     backgroundColor: 'black',
-    alignItems:'center',
+    alignItems: 'center',
   },
   viewTwo: {
     flex: 7,
     backgroundColor: 'darkcyan',
-    justifyContent:'flex-end', 
+    justifyContent: 'flex-end',
   },
   viewThree: {
     flex: 7,
-    backgroundColor: 'darkcyan'
+    backgroundColor: 'darkcyan',
   },
   h1: {
-    flex:1,
+    flex: 1,
     fontSize: 36,
     color: 'white',
-    
+
   },
   b1: {
-    color: 'green'
-  }
+    color: 'green',
+  },
 });
 
-export default Friends
+export default Friends;
